@@ -1,0 +1,11 @@
+# ssh-config: the lines for your ~/.ssh/config that give the book club's server a short name.
+#
+# Write a Host block for the name bookclub, with these three settings:
+#   HostName      localhost             (the practice server is your own computer)
+#   User          your user name there  (whoami prints it)
+#   IdentityFile  ~/.ssh/id_ed25519     (the key from "SSH Keys and ~/.ssh/config")
+#
+# Check it without connecting:
+#   ssh -F ssh-config -G bookclub | grep -E '^(user|hostname|identityfile) '
+#
+# Write your lines under this one.

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# stand-in/ssh: a pretend ssh, for trying deploy.sh on a computer with no SSH server.
+#
+# Put this folder first on your PATH for one command, and deploy.sh's ssh, and the ssh
+# that rsync starts, are this file instead of the real ssh:
+#
+#   PATH="$PWD/stand-in:$PATH" ./deploy.sh
+#
+# Instead of logging in to a server, it runs the command on this computer, inside the
+# folder stand-in/server-home/, the way `ssh localhost` runs it in your home folder.
+# So after a deploy, the "server's" copy of the site is in stand-in/server-home/bookclub-site/.
+# It skips the server's name and every ssh option. It can't log you in: give it a command.
+# You don't need to change this file.
+
+server_home="${SERVER_HOME:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/server-home}"
+
+# Skip ssh's options, and the value after the ones that take one (-p 22, -F file, -i key...).
+while [[ $# -gt 0 && $1 == -* ]]; do
+  case "$1" in
+    -[BbcDEeFIiJLlmOopQRSWw]) shift 2 ;;
+    *) shift ;;
+  esac
+done
+
+if [[ $# -lt 2 ]]; then
+  echo "stand-in/ssh: give it a server and a command, such as: ssh bookclub 'ls'" >&2
+  exit 255
+fi
+
+host="$1"
+shift
+if [[ -n ${SSH_LOG:-} ]]; then
+  printf '%s\t%s\n' "$host" "$*" >> "$SSH_LOG"
+fi
+
+mkdir -p "$server_home" && cd "$server_home" || exit 255
+
+# A real remote command's output goes back through ssh, not to a screen.
+if [[ -t 1 ]]; then
+  bash -c "$*" | cat
+  exit "${PIPESTATUS[0]}"
+fi
+exec bash -c "$*"

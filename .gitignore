@@ -1,0 +1,2 @@
+# The stand-in ssh's pretend server: made when you try deploy.sh without a server.
+stand-in/server-home/
