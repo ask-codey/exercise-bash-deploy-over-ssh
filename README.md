@@ -51,7 +51,7 @@ PATH="$PWD/stand-in:$PATH" ./deploy.sh
 ls stand-in/server-home/bookclub-site
 ```
 
-**With your computer's SSH server on** (*Logging In to Another Computer: ssh*) and your key on it (*SSH Keys and ~/.ssh/config*), deploy for real. Add the lines from `ssh-config` to your `~/.ssh/config` with nano, then run `./deploy.sh`: the site lands in `~/bookclub-site` on your own computer.
+**With your computer's SSH server on** (*Logging In to Another Computer: ssh*) and your key on it (*SSH Keys and ~/.ssh/config*), deploy for real. Add the lines from `ssh-config` to your `~/.ssh/config` with nano, then run `./deploy.sh`: the site lands in `~/bookclub-site` on your own computer. The lesson's section *Optional: deploy to a real server* has every step, including turning the server off again afterwards.
 
 ## Check your work
 
